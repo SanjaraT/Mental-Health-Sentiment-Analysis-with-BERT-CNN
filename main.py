@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import re
+from sklearn.preprocessing import LabelEncoder
 
 df = pd.read_csv("Combined Data.csv")
 # print(df.head())
@@ -26,4 +27,12 @@ def clean_text(text):
 
 df['clean_text'] = df['statement'].apply(clean_text)
 print(df.head())
+
+#label Encoding
+le = LabelEncoder()
+df['label_encoded'] = le.fit_transform(df['status'])
+
+num_classes = len(le.classes_)
+print(le.classes_)
+
 
