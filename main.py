@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import re
 from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
 
 df = pd.read_csv("Combined Data.csv")
 # print(df.head())
@@ -26,13 +27,24 @@ def clean_text(text):
     return text.strip()
 
 df['clean_text'] = df['statement'].apply(clean_text)
-print(df.head())
+# print(df.head())
 
 #label Encoding
 le = LabelEncoder()
 df['label_encoded'] = le.fit_transform(df['status'])
 
 num_classes = len(le.classes_)
-print(le.classes_)
+# print(le.classes_)
+
+#Train/Test
+X_train, X_test, y_train, y_test = train_test_split(
+    df['clean_text'],
+    df['label_encoded'],
+    test_size=0.2,
+    stratify=df['label_encoded'],
+    random_state=42
+)
+
+
 
 
