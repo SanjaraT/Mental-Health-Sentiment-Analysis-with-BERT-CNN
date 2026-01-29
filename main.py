@@ -5,6 +5,10 @@ import seaborn as sns
 import re
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
+import tensorflow as tf
+from tensorflow.keras.models import Model
+from transformers import DistilBertModel,DistilBertTokenizer
+
 
 df = pd.read_csv("Combined Data.csv")
 # print(df.head())
@@ -45,6 +49,20 @@ X_train, X_test, y_train, y_test = train_test_split(
     random_state=42
 )
 
+#Tokenization
+MAX_LEN = 64
+tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased")
+
+def bert_encode(texts):
+    return tokenizer(
+        list(texts),
+        padding = 'max_length',
+        truncation=True, 
+        max_length = MAX_LEN,
+        return_tensors = "pt"
+    )
+train_encodings = bert_encode(X_train)
+test_encodings = bert_encode(X_test)
 
 
 
